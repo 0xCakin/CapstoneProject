@@ -20,17 +20,17 @@ songplay_table_create = """
 					    AverageTemperature FLOAT,
 					    Latitude VARCHAR,
 					    Longitude VARCHAR
-					    );
+					    );"""
 					    
 # Temperature Table Create Statement
 temperature_table_create = """
-    CREATE TABLE IF NOT EXISTS temperature (
+   				 CREATE TABLE IF NOT EXISTS temperature (
     				      AverageTemperature FLOAT,
                                       City VARCHAR,
                                       Country VARCHAR,
                                       Latitude VARCHAR,
                                       Longitude VARCHAR
-                                      i94port VARCHAR(3) """
+                                      i94port VARCHAR(3)); """
 
 # INSERT RECORDS
 # Immigration Table Insert Statement
@@ -39,6 +39,7 @@ immigration_table_insert = """ INSERT INTO immigration (cicid, year, month, city
 # Temperature Table Insert Statement
 temperature_table_insert = """ INSERT INTO users (AverageTemperature, City, Country, Latitude, Longitude, i94port)
                         VALUES (%s, %s, %s, %s, %s, %s)
+                        """
 
 
 # QUERY LISTS
