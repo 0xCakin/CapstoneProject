@@ -1,70 +1,73 @@
-# Capstone Project
+# Temperature and US Immigration Data ETL Pipeline
+### Data Engineering Capstone Project
 
+#### Project Summary
 This project aims to analyze immigration events using I94 Immigration data and city temperature data. Joining these two datasets will provide us a wider range of motion to complete this task.
 
 ## Data sources
 
-#### I94 Immigration Data
+### I94 Immigration Data
 This data comes from the US National Tourism and Trade Office. A data dictionary is included in the workspace. [This](https://travel.trade.gov/research/reports/i94/historical/2016.html) 
 
-#### World Temperature Data
+### World Temperature Data
 This dataset came from Kaggle. You can read more about it [here](https://www.kaggle.com/berkeleyearth/climate-change-earth-surface-temperature-data).
 
-#### U.S. City Demographic Data
+### U.S. City Demographic Data
 This data comes from OpenSoft. You can read more about it [here](https://public.opendatasoft.com/explore/dataset/us-cities-demographics/export/).
 
+## Data cleaning
 
-## Conceptual Data Model 
-
-**Fact Table** - I94 immigration data joined with the city temperature data on i94port
-Columns:
-   - i94yr: 4 digit year,
-   - i94mon: numeric month,
-   - i94cit: 3 digit code of origin city,
-   - i94port: 3 character code of destination USA city,
-   - arrdate: arrival date in the USA,
-   - i94mode: 1 digit travel code,
-   - depdate: departure date from the USA,
-   - i94visa: reason for immigration,
-   - AverageTemperature: average temperature of destination city,
-
-**Dimension Table** - I94 immigration data Events
-Columns:
-   - i94yr: 4 digit year
-   - i94mon: numeric month
-   - i94cit: 3 digit code of origin city
-   - i94port: 3 character code of destination USA city
-   - arrdate: arrival date in the USA
-   - i94mode: 1 digit travel code
-   - depdate: departure date from the USA
-   - i94visa: reason for immigration
-
-**Dimension Table** - temperature data
-Columns:
-- i94port: 3 character code of destination city (mapped from cleaned up immigration data)
-- AverageTemperature: average temperature
-- City: city name
-- Country: country name
-- Latitude: latitude
-- Longitude: longitude
+* Filter temperature data to only use US data.
+* Remove irregular ports from I94 data.
+* Drop rows with missing IATA codes from I94 data. We need the IATA codes to join the data with other sources.
 
 
-## Mapping Out Data Pipelines
-1. Create immigration dimension tables
-2. Create temperature dimension tables
-3. Join tables above
-4. Insert data
+#### Conceptual Data Model 
+Immigration data contains the major information. Therefore it is better to keep it as a fact table and make foreign keys for other tables to connect immigration table.
+- cicid     
+- year     
+- month    
+- city     
+- res      
+- iport  
+- arrdate  
+- depdate  
+- visa     
+- addr 
 
-## Choice of tools and technologies for the project
-I used Spark since it can easily handle multiple file formats (SAS, csv, etc) that contain large amounts of data. Spark SQL was used to process the input files into dataframes and manipulated via standard SQL join operations to create the tables.
+The first dimension table is I94port. The columns are showed below.
+- port_code --foreign key
+- port_city 
+- port_state 
 
-## How often the data should be updated
+The second dimension table will be the temperature data.
+- AverageTemperature 
+- City 
+- Country 
+- Latitude 
+- Longitude 
+- iport -- foreign key
+
+
+#### Mapping Out Data Pipelines
+As described in the step 2, data clean up should be completed first of all.
+- Clean up and normalize the I94 data
+- Clean up and normalize the temperature data
+- Organize i94port data
+- Run create_table.py file
+- Join temperature data with i94port
+- Insert the data into the database
+
+### Choice of tools and technologies for the project
+I used Panda library for this project which I am very comfortable with. It can easily handle multiple file formats (SAS, csv, etc) that contain large amounts of data. It is also easy to manipulate the data and very efficient. However it would be better to use Spark later to on to be able to utilize Amazon Web Services and Apache Airflow. Amazon Services will help (Redshift, EMR) to distribute the data very efficiently and Airflow will be useful for schedeling the process.
+
+### How often the data should be updated
 Since the format of the raw files are monthly, we should continue pulling the data monthly.
     
-## FAQ
-* The data was increased by 100x.
-  * Use Spark with EMR to process the data in a distributed way with high efficiency
-* The data populates a dashboard that must be updated on a daily basis by 7am every day
-  * Use Airflow and create a DAG to monitor the process
-* The database needed to be accessed by 100+ people
-  * Use Redshift. Great auto-scaling capabilities and can be accessed by many people
+### FAQ
+- The data was increased by 100x.
+- - Use Spark with EMR to process the data in a distributed way with high efficiency
+- The data populates a dashboard that must be updated on a daily basis by 7am every day
+- - Use Airflow and create a DAG to monitor the process
+- The database needed to be accessed by 100+ people
+- - Use Redshift. Great auto-scaling capabilities and can be accessed by many people
