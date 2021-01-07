@@ -23,7 +23,9 @@ This data comes from OpenSoft [here](https://public.opendatasoft.com/explore/dat
 
 
 #### Conceptual Data Model 
-Immigration data contains the major information. Therefore it is better to keep it as a fact table and make foreign keys for other tables to connect immigration table.
+Star schema is the simplest conceptual data model. It consists of one or multiple fact tables joining to numerous of dimension tables. In this project, Immigration data contains the major information. Therefore it is better to keep it as a fact table in this star schema and make foreign keys for other tables to connect immigration table. This will allow us to examine the data in a wider range. For example, we can connect temperature and immigration table to analyze the correlation between the temperature and immigration patterns. As another example, i94port table and immigration table join can determine immigration pattern to city and states.
+
+Immigration Table:
 - cicid     
 - year     
 - month    
@@ -65,9 +67,13 @@ I used Panda library for this project which I am very comfortable with. It can e
 Since the format of the raw files are monthly, we should continue pulling the data monthly.
     
 ### FAQ
-- The data was increased by 100x.
-- - Use Spark with EMR to process the data in a distributed way with high efficiency
-- The data populates a dashboard that must be updated on a daily basis by 7am every day
-- - Use Airflow and create a DAG to monitor the process
-- The database needed to be accessed by 100+ people
-- - Use Redshift. Great auto-scaling capabilities and can be accessed by many people
+* When the data was increased by 100x, do you store the data in the same way? If your project is heavy on reading over writing, how do you store the data in a way to meet this requirement? What if the requirement is heavy on writing instead?
+* * In that case, I would use Spark with EMR to process the data in a distributed way with high efficiency. In this project the data has been stored in Postgres database. However it can be better approach to use NoSQL database if the data gets much bigger. Apache Cassandra can be a great example since it is free and taught in Data Engineering course. Airflow can help to write the data into the database. It can scale above the 100 million rows.
+
+* How do you run this pipeline on a daily basis by 7 am every day. What if the dag fails, how do you update the dashboard? Will the dashboard still work? Or will you populate the dashboard by using the last day?
+
+* * I would use Airflow and create a DAG to monitor the process. If the dag fails, a trigger can be set up within Airflow to inform the Airflow operator or the data engineering team to troubleshoot the issue.
+
+* How do you make your database could be accessed by 100+ people? Can you come up with a more cost-effective approach? Does your project need to support 100+ connections at the same time?
+
+* * Redshift can be a good alternative if over 100+ people need to access the database. Redshift Great auto-scaling capabilities and can be accessed by many people. Amazon Web Services provides multiple options for Redshift. To make it cost-effective, we can choose the lowest node that is in our bugdet. PostgreSQL can be a cheaper option however the performance compared to redshift will be lower.
