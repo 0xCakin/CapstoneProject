@@ -7,13 +7,13 @@ This project aims to analyze immigration events using I94 Immigration data and c
 ## Data sources
 
 ### I94 Immigration Data
-This data comes from the US National Tourism and Trade Office. A data dictionary is included in the workspace. [This](https://travel.trade.gov/research/reports/i94/historical/2016.html) 
+This data comes from the US National Tourism and Trade Office [here](https://travel.trade.gov/research/reports/i94/historical/2016.html).
 
 ### World Temperature Data
-This dataset came from Kaggle. You can read more about it [here](https://www.kaggle.com/berkeleyearth/climate-change-earth-surface-temperature-data).
+This dataset came from Kaggle [here](https://www.kaggle.com/berkeleyearth/climate-change-earth-surface-temperature-data).
 
 ### U.S. City Demographic Data
-This data comes from OpenSoft. You can read more about it [here](https://public.opendatasoft.com/explore/dataset/us-cities-demographics/export/).
+This data comes from OpenSoft [here](https://public.opendatasoft.com/explore/dataset/us-cities-demographics/export/).
 
 ## Data cleaning
 
@@ -51,7 +51,7 @@ The second dimension table will be the temperature data.
 
 #### Mapping Out Data Pipelines
 As described in the step 2, data clean up should be completed first of all.
-- Clean up and normalize the I94 data
+- Clean up and normalize the immigration data
 - Clean up and normalize the temperature data
 - Organize i94port data
 - Run create_table.py file
