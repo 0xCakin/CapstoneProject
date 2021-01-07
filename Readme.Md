@@ -21,7 +21,6 @@ This data comes from OpenSoft [here](https://public.opendatasoft.com/explore/dat
 * Remove irregular ports from I94 data.
 * Drop rows with missing IATA codes from I94 data. We need the IATA codes to join the data with other sources.
 
-
 #### Conceptual Data Model 
 Star schema is the simplest conceptual data model. It consists of one or multiple fact tables joining to numerous of dimension tables. In this project, Immigration data contains the major information. Therefore it is better to keep it as a fact table in this star schema and make foreign keys for other tables to connect immigration table. This will allow us to examine the data in a wider range. For example, we can connect temperature and immigration table to analyze the correlation between the temperature and immigration patterns. As another example, i94port table and immigration table join can determine immigration pattern to city and states.
 
